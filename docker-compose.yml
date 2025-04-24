@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  frontend:
+    image: product_frontend:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    container_name: frontend_app
+    networks:
+      - front-tier
+    stdin_open: true
+    tty: true
+  backend:
+    image: product_backend:latest
+    ports:
+      - "3001:3001"
+    environment:
+      MYSQL_HOST: mysql_db
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DB: NodeTest
+    depends_on:
+      - mysql
+    container_name: backend_app
+    networks:
+      - front-tier
+      - back-tier
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    container_name: mysql_db
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - back-tier
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+
+networks:
+ front-tier:
+    driver: bridge
+ back-tier:  
+    driver: bridge
