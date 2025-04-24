@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   frontend:
-    image: product_frontend:latest
+    build: ./my-create-app
     ports:
       - "3000:3000"
     depends_on:
@@ -12,7 +12,7 @@ services:
     stdin_open: true
     tty: true
   backend:
-    image: product_backend:latest
+    build: ./backend
     ports:
       - "3001:3001"
     environment:
@@ -31,6 +31,8 @@ services:
     ports:
       - "3307:3306"
     container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
@@ -38,7 +40,7 @@ services:
     networks:
       - back-tier
     volumes:
-      - /var/lib/mysql:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d
 
 networks:
  front-tier:
