@@ -21,7 +21,8 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_DB: NodeTest
     depends_on:
-      - mysql
+      mysql:
+       condition: service_started
     container_name: backend_app
     networks:
       - front-tier
@@ -45,5 +46,5 @@ services:
 networks:
  front-tier:
     driver: bridge
- back-tier:  
+ back-tier:
     driver: bridge
