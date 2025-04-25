@@ -1,5 +1,5 @@
 -- Create database if it doesn't exist
-CREATE NodeTest IF NOT EXISTS NodeTest;
+CREATE DATABASE IF NOT EXISTS NodeTest;
 
 -- Create new user and grant privileges
 CREATE USER IF NOT EXISTS 'test'@'%' IDENTIFIED BY 'test';
