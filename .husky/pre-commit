@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Lint backend
+echo "Linting backend..."
+npm run lint --prefix backend || {
+  echo "Backend linting failed!"
+  exit 1
+}
+
+# Lint frontend
+echo "Linting frontend..."
+npm run lint --prefix my-create-app || {
+  echo "Frontend linting failed!"
+  exit 1
+}
+
+# Check for secrets
+echo "Checking for secrets..."
+detect-secrets-hook --baseline .secrets.baseline || {
+  echo "Secret detection failed!"
+  exit 1
+}

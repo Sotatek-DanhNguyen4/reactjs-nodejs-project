@@ -1,0 +1,24 @@
+{
+  "name": "reactjs-nodejs-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sotatek-HuyNguyen17/reactjs-nodejs-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sotatek-HuyNguyen17/reactjs-nodejs-project/issues"
+  },
+  "homepage": "https://github.com/Sotatek-HuyNguyen17/reactjs-nodejs-project#readme",
+  "description": "",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}
