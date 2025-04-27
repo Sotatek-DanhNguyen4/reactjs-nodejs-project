@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install && (cd backend && npm install) && (cd my-create-app && npm install)"
+    "prepare": "husky install && (cd backend && npm install) && (cd frontend && npm install)"
   },
   "repository": {
     "type": "git",

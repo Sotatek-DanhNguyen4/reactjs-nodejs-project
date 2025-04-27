@@ -10,7 +10,7 @@ npm run lint --prefix backend || {
 
 # Lint frontend
 echo "Linting frontend..."
-npm run lint --prefix my-create-app || {
+npm run lint --prefix frontend || {
   echo "Frontend linting failed!"
   exit 1
 }
