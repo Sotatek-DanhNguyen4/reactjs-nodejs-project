@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import CountryList from './CountryList';
 import React from 'react';
