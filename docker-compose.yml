@@ -14,7 +14,7 @@ services:
     tty: true
   backend:
     build: ./backend
-    image: react-nodejs-frontend:latest
+    image: react-nodejs-backend:latest
     ports:
       - "3001:3001"
     environment:
