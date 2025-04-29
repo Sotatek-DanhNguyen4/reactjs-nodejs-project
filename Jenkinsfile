@@ -1,6 +1,7 @@
 pipeline {
     agent any
 
+    
     stages {
         stage('Fetch Code') {
             steps {
@@ -37,8 +38,9 @@ pipeline {
         stage('Build images') {
             steps {
                 script {
+                    sh'whoami'
                     sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-frontend:latest -t ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT} -f frontend/Dockerfile ./frontend'
-
+                    sh "echo REPOSITORY_URI: ${REPOSITORY_URI}"
                     sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-backend:latest -t ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT} -f backend/Dockerfile ./backend'
                 }
             }
