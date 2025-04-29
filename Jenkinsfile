@@ -26,7 +26,9 @@ pipeline {
         stage('Build image from dockercompose') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'docker build -t react-nodejs-frontend:latest -f frontend/Dockerfile'
+                    sh 'docker build -t react-nodejs-backend:latest -f backend/Dockerfile'
+                    sh 'docker tag react-nodejs-frontend:latest react-nodejs-frontend:commit'
                 }
             }
             
@@ -48,5 +50,7 @@ pipeline {
                 echo 'Backend image security scan completed.'
             }
         }
+        
     }
 }
+
