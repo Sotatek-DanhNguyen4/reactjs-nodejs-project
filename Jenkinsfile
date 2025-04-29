@@ -1,8 +1,7 @@
 pipeline {
     agent any
-    
-    stages {
 
+    stages {
         stage('Fetch Code') {
             steps {
                 git branch: 'develop', url: 'git@github.com:Sotatek-HuyNguyen17/reactjs-nodejs-project.git'
@@ -10,9 +9,9 @@ pipeline {
         }
 
         stage('Create environment variables') {
-            steps{
+            steps {
                 script {
-                    def scmVars =checkout([$class: 'GitSCM', branches: [[name: 'develop']], userRemoteConfigs: [[url: 'git@github.com:Sotatek-HuyNguyen17/reactjs-nodejs-project.git']]])
+                    def scmVars = checkout([$class: 'GitSCM', branches: [[name: 'develop']], userRemoteConfigs: [[url: 'git@github.com:Sotatek-HuyNguyen17/reactjs-nodejs-project.git']]])
                     env.GIT_COMMIT = scmVars.GIT_COMMIT
                     env.GIT_COMMIT_SHORT = scmVars.GIT_COMMIT.take(7) // Get the short SHA
                 }
@@ -34,16 +33,15 @@ pipeline {
                 }
                 echo 'Code analysis completed.'
             }
-        } 
+        }
         stage('Build images') {
             steps {
                 script {
-                     // Build and tag images with both 'latest' and the short Git commit hash
-                    sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-frontend:latest -t ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT} -f ./frontend'
-                    sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-backend:latest -t ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT} -f ./backend'
+                    sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-frontend:latest -t ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT} -f frontend/Dockerfile ./frontend'
+
+                    sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-backend:latest -t ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT} -f backend/Dockerfile ./backend'
                 }
             }
-            
         }
         stage('Scan Frontend Image') {
             steps {
@@ -68,7 +66,7 @@ pipeline {
                 script {
                     // Login to Docker Hub
                     sh 'echo ${DOCKER_PASSWORD} | docker login ${REPOSITORY_URI} -u ${DOCKER_USERNAME} --password-stdin'
-                    
+
                     // Push images with both 'latest' and the short Git commit hash tags
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-frontend:latest'
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT}'
@@ -77,6 +75,5 @@ pipeline {
                 }
             }
         }
-        
     }
 }
