@@ -34,7 +34,7 @@ pipeline {
         stage('Scan Frontend Image') {
             steps {
                 script {
-                    sh 'trivy image --exit-code 0 --severity HIGH,CRITICAL reactjs-nodejs-frontend:latest'
+                    sh 'trivy image --exit-code 0 --severity HIGH,CRITICAL react-nodejs-frontend:latest'
                 }
                 echo 'Frontend image security scan completed.'
             }
@@ -42,7 +42,7 @@ pipeline {
         stage('Scan Backend Image') {
             steps {
                 script {
-                    sh 'trivy image --exit-code 0 --severity HIGH,CRITICAL reactjs-nodejs-backend:latest'
+                    sh 'trivy image --exit-code 0 --severity HIGH,CRITICAL react-nodejs-backend:latest'
                 }
                 echo 'Backend image security scan completed.'
             }
