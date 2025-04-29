@@ -26,10 +26,26 @@ pipeline {
         stage('Build image from dockercompose') {
             steps {
                 script {
-                    sh 'docker-compose build -t reactjs-nodejs-project:latest .'
+                    sh 'docker-compose -f docker-compose.yml build'
                 }
             }
             
+        }
+        stage('Scan Frontend Image') {
+            steps {
+                script {
+                    sh 'trivy image --exit-code 1 --severity HIGH,CRITICAL reactjs-nodejs-frontend:latest'
+                }
+                echo 'Frontend image security scan completed.'
+            }
+        }
+        stage('Scan Backend Image') {
+            steps {
+                script {
+                    sh 'trivy image --exit-code 1 --severity HIGH,CRITICAL reactjs-nodejs-backend:latest'
+                }
+                echo 'Backend image security scan completed.'
+            }
         }
     }
 }
