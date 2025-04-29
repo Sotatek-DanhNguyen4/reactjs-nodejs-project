@@ -1,5 +1,5 @@
 # Use the latest LTS version of Node.js
-FROM node:16-alpine
+FROM node:18-bullseye
 
 # Set the working directory inside the container
 WORKDIR /app
