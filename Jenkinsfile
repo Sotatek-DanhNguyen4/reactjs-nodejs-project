@@ -77,5 +77,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to production') {
+            steps {
+                script {
+                    // Deploy frontend
+                    ssh 'ssh -o StrictHostKeyChecking=no -i .ssh/id_rsa huynguyen@prod-sotatek "cd /home/huynguyen/reactjs-nodejs-project && docker-compose up -d"'
+                }
+            }
+        }
     }
 }
