@@ -82,7 +82,7 @@ pipeline {
             steps {
                 script {
                     // Deploy frontend
-                    sshagent(['prod-server-ssh']) {
+                    sshagent(credentials: ['prod-server-ssh']) {
                         sh 'ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "cd /home/huynguyen/reactjs-nodejs-project && docker-compose down && docker-compose up -d"'
             }
                 }
