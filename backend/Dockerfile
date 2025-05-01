@@ -1,5 +1,5 @@
 # Use node version 22 (cache)
-FROM node:18-alpine
+FROM node:18-bullseye
 
 # Set the working directory (app) (cache)
 WORKDIR /app

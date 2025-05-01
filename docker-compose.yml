@@ -2,6 +2,7 @@ version: "3.8"
 services:
   frontend:
     build: ./frontend
+    image: react-nodejs-frontend:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -13,6 +14,7 @@ services:
     tty: true
   backend:
     build: ./backend
+    image: react-nodejs-backend:latest
     ports:
       - "3001:3001"
     environment:
