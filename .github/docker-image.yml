@@ -1,0 +1,75 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  ci-cd:
+    runs-on: self-hosted # Use my self-hosted runner
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3 #use the checkout yaml file to get the code from the repo
+
+      - name: Set Environment Variables
+        id: vars
+        run: |
+          echo "GIT_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Run SonarQube Analysis
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=react-nodejs-project \
+            -Dsonar.projectName=react-nodejs-project \
+            -Dsonar.projectVersion=v1.0.0
+
+      - name: Build Frontend Image
+        run: |
+          docker build -t ${{ secrets.REPOSITORY_URI }}/react-nodejs-frontend:latest \
+                       -t ${{ secrets.REPOSITORY_URI }}/react-nodejs-frontend:${{ env.GIT_COMMIT_SHORT }} \
+                       -f frontend/Dockerfile ./frontend
+
+      - name: Build Backend Image
+        run: |
+          docker build -t ${{ secrets.REPOSITORY_URI }}/react-nodejs-backend:latest \
+                       -t ${{ secrets.REPOSITORY_URI }}/react-nodejs-backend:${{ env.GIT_COMMIT_SHORT }} \
+                       -f backend/Dockerfile ./backend
+
+      - name: Scan Frontend Image
+        run: |
+          trivy image --exit-code 0 --format json -o frontend_report.json \
+                      --severity HIGH,CRITICAL ${{ secrets.REPOSITORY_URI }}/react-nodejs-frontend:latest
+
+      - name: Scan Backend Image
+        run: |
+          trivy image --exit-code 0 --format json -o backend_report.json \
+                      --severity HIGH,CRITICAL ${{ secrets.REPOSITORY_URI }}/react-nodejs-backend:latest
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.REPOSITORY_URI }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push Frontend Image
+        run: |
+          docker push ${{ secrets.REPOSITORY_URI }}/react-nodejs-frontend:latest
+          docker push ${{ secrets.REPOSITORY_URI }}/react-nodejs-frontend:${{ env.GIT_COMMIT_SHORT }}
+
+      - name: Push Backend Image
+        run: |
+          docker push ${{ secrets.REPOSITORY_URI }}/react-nodejs-backend:latest
+          docker push ${{ secrets.REPOSITORY_URI }}/react-nodejs-backend:${{ env.GIT_COMMIT_SHORT }}
+
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.PROD_SERVER_IP }}
+          username: huynguyen
+          script: |
+            cd /home/huynguyen/reactjs-nodejs-project
+            docker-compose down
+            docker-compose up -d
