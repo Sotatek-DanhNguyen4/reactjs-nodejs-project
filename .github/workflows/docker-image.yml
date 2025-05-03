@@ -25,7 +25,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          /opt/sonar-scanner/bin \
+          /opt/sonar-scanner/bin/sonar-scanner \
             -Dsonar.projectKey=react-nodejs-project \
             -Dsonar.projectName=react-nodejs-project \
             -Dsonar.projectVersion=v1.0.0
