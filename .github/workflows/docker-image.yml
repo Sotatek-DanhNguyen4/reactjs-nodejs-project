@@ -24,6 +24,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          which sonar-scanner || (echo "SonarQube scanner not found" && exit 1)
           sonar-scanner \
             -Dsonar.projectKey=react-nodejs-project \
             -Dsonar.projectName=react-nodejs-project \
