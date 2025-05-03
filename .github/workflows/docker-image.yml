@@ -20,7 +20,10 @@ jobs:
           echo "GIT_COMMIT_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Set PATH
-        run: echo "export PATH=\$PATH:/opt/sonar-scanner/bin" >> $GITHUB_ENV
+        run: echo "/opt/sonar-scanner/bin" >> $GITHUB_PATH
+      
+      - name: check PATH
+        run: echo $PATH
 
       - name: Run SonarQube Analysis
         env:
