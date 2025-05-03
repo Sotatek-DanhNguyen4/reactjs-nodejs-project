@@ -71,11 +71,11 @@ jobs:
           docker push ${{ secrets.REPOSITORY_URI }}/react-nodejs-backend:${{ env.GIT_COMMIT_SHORT }}
 
       - name: Deploy to Production
-        uses: appleboy/ssh-action@v0.1.8
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          username: huynguyen
           script: |
             cd /home/huynguyen/reactjs-nodejs-project
             docker-compose down
