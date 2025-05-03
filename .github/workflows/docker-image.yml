@@ -74,6 +74,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
+          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: huynguyen
           script: |
             cd /home/huynguyen/reactjs-nodejs-project
