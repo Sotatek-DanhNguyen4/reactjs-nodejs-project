@@ -73,9 +73,10 @@ jobs:
       - name: Deploy to Production
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.PROD_SERVER_IP }}
+          host: 172.16.5.203
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
           script: |
             cd /home/huynguyen/reactjs-nodejs-project
             docker-compose down
