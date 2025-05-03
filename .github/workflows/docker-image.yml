@@ -19,16 +19,13 @@ jobs:
           echo "GIT_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
           echo "GIT_COMMIT_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: print $PATH
-        run: echo $PATH && whoami
 
       - name: Run SonarQube Analysis
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          whoami
-          sonar-scanner \
+          /opt/sonar-scanner/bin \
             -Dsonar.projectKey=react-nodejs-project \
             -Dsonar.projectName=react-nodejs-project \
             -Dsonar.projectVersion=v1.0.0
