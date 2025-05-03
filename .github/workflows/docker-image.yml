@@ -31,8 +31,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           sonar-scanner \
-            -Dsonar.projectKey=react-nodejs-project \
-            -Dsonar.projectName=react-nodejs-project \
+            -Dsonar.projectKey=react-nodejs-project-github-actions \
+            -Dsonar.projectName=react-nodejs-project-github-actions \
             -Dsonar.projectVersion=v1.0.0
 
       - name: Build Frontend Image
