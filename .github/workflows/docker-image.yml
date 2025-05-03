@@ -20,8 +20,8 @@ jobs:
           echo "GIT_COMMIT_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: print $PATH
-        run: echo $PATH
-        
+        run: echo $PATH || whoami
+
       - name: Run SonarQube Analysis
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
