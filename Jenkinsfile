@@ -48,7 +48,7 @@ pipeline {
         stage('Scan Frontend Image') {
             steps {
                 script {
-                    sh 'trivy image --exit-code 0 --format json -o $(date +%H:%M:%S)_frontend_report.json --severity HIGH,CRITICAL react-nodejs-frontend:latest'
+                    sh 'trivy image --exit-code 0 --format json -o $(date +%H:%M:%S)_frontend_report.json --severity HIGH,CRITICAL ${REPOSITORY_URI}/react-nodejs-frontend:latest'
                     sh 'pwd'
                 }
                 echo 'Frontend image security scan completed.'
@@ -57,7 +57,7 @@ pipeline {
         stage('Scan Backend Image') {
             steps {
                 script {
-                    sh 'trivy image  --exit-code 0 --format json -o $(date +%H:%M:%S)_backend_report.json --severity HIGH,CRITICAL react-nodejs-backend:latest'
+                    sh 'trivy image  --exit-code 0 --format json -o $(date +%H:%M:%S)_backend_report.json --severity HIGH,CRITICAL ${REPOSITORY_URI}/react-nodejs-backend:latest'
                 }
                 echo 'Backend image security scan completed.'
             }

@@ -4,7 +4,7 @@ function CountryList() {
     const [countries, setCountries] = useState([]);
 
     useEffect(() => {
-        fetch('http://10.4.22.101:3001/countries')
+        fetch(`http://${process.env.REACT_APP_HOST_IP}:3001/countries`)
             .then(response => response.json())
             .then(data => setCountries(data))
             .catch(error => console.error('Error fetching countries:', error));

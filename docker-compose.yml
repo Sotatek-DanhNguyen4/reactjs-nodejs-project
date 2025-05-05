@@ -5,6 +5,8 @@ services:
     image: react-nodejs-frontend:latest
     ports:
       - "3000:3000"
+    env_file:
+        - ./frontend/.env
     depends_on:
       - backend
     container_name: frontend_app
@@ -44,6 +46,7 @@ services:
       - back-tier
     volumes:
       - ./initdb:/docker-entrypoint-initdb.d
+      - ./mysql_data:/var/lib/mysql
 
 networks:
  front-tier:
