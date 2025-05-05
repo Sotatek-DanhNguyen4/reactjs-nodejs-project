@@ -5,6 +5,8 @@ services:
     image: react-nodejs-frontend:latest
     ports:
       - "3000:3000"
+    env_file:
+        - ./frontend/.env
     depends_on:
       - backend
     container_name: frontend_app
