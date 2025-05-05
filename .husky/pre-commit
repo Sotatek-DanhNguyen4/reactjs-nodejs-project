@@ -17,7 +17,7 @@ npm run lint --prefix frontend || {
 
 # Check for secrets
 echo "Checking for secrets..."
-detect-secrets-hook --baseline .secrets.baseline || {
+git-secrets --scan ./ || {
   echo "Secret detection failed!"
   exit 1
 }
