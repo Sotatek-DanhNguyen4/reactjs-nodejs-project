@@ -1,5 +1,7 @@
 pipeline {
-    agent  {label 'Slave node'}
+    agent {
+        label 'Slave node'
+    }
 
     
     stages {
@@ -20,6 +22,7 @@ pipeline {
         }
 
         stage('Code Analysis') {
+
             environment {
                 scannerHome = tool 'SonarQube'
             }
@@ -36,6 +39,7 @@ pipeline {
             }
         }
         stage('Build images') {
+
             steps {
                 script {
                     sh'whoami'
@@ -67,13 +71,25 @@ pipeline {
             steps {
                 script {
                     // Login to Docker Hub
-                    sh 'echo ${DOCKER_PASSWORD} | docker login ${REPOSITORY_URI} -u ${DOCKER_USERNAME} --password-stdin'
+                    sh 'echo ${DOCKER_PASSWORD} | docker login ${REPOSITOY_URI} -u ${DOCKER_USERNAME} --password-stdin'
 
                     // Push images with both 'latest' and the short Git commit hash tags
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-frontend:latest'
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT}'
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-backend:latest'
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT}'
+                }
+            }
+        }
+
+        stage('Clean artifacts') {
+            steps {
+                script {
+                    // clean local images after build
+                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-frontend:latest'
+                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT}'
+                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-backend:latest'
+                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT}'
                 }
             }
         }
