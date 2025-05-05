@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent  {label 'Slave node'}
 
     
     stages {
@@ -83,7 +83,7 @@ pipeline {
                 script {
                     // Deploy frontend
                     sshagent(credentials: ['prod-server-ssh']) {
-                        sh 'ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "cd /home/huynguyen/reactjs-nodejs-project && docker-compose down && docker-compose up -d"'
+                        sh 'ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "cd /home/huynguyen/reactjs-nodejs-project && docker-compose down --rmi all && docker-compose up -d"'
             }
                 }
             }
