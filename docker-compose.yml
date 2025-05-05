@@ -44,6 +44,7 @@ services:
       - back-tier
     volumes:
       - ./initdb:/docker-entrypoint-initdb.d
+      - ./mysql_data:/var/lib/mysql
 
 networks:
  front-tier:
