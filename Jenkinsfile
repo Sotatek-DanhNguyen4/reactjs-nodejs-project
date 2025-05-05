@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     // Login to Docker Hub
-                    sh 'echo ${DOCKER_PASSWORD} | docker login ${REPOSITOY_URI} -u ${DOCKER_USERNAME} --password-stdin'
+                    sh 'echo ${DOCKER_PASSWORD} | docker login ${REPOSITORY_URI} -u ${DOCKER_USERNAME} --password-stdin'
 
                     // Push images with both 'latest' and the short Git commit hash tags
                     sh 'docker push ${REPOSITORY_URI}/react-nodejs-frontend:latest'
