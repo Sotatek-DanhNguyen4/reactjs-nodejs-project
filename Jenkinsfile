@@ -92,7 +92,13 @@ pipeline {
                 script {
                     // Deploy frontend
                     sshagent(credentials: ['prod-server-ssh']) {
-                        sh 'ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "cd /home/huynguyen/reactjs-nodejs-project && docker-compose down && sed -i 's|\(image: .*:\)\([^[:space:]]*\)|\1${GIT_COMMIT_SHORT}|' docker-compose.yml &&  docker-compose up -d"'
+                    sh """
+                        ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "\
+                            cd /home/huynguyen/reactjs-nodejs-project && \
+                            docker-compose down && \
+                            sed -i 's|\\(image: .*:\\)[^[:space:]]*|\\1${GIT_COMMIT_SHORT}|' docker-compose.yml && \
+                            docker-compose up -d"
+                        """
             }
                 }
             }
