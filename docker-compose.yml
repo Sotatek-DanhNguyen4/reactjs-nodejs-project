@@ -2,11 +2,9 @@ version: "3.8"
 services:
   frontend:
     build: ./frontend
-    image: react-nodejs-frontend:latest
+    image: react-nodejs-frontend:878676
     ports:
       - "3000:3000"
-    env_file:
-        - ./frontend/.env
     depends_on:
       - backend
     container_name: frontend_app
