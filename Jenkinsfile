@@ -96,7 +96,7 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "\
                             cd /home/huynguyen/reactjs-nodejs-project && \
                             docker-compose down && \
-                            sed -i 's|\\(image: .*:\\)[^[:space:]]*|\\1${GIT_COMMIT_SHORT}|' docker-compose.yml && \
+                            sed -i '/mysql/!s|\\(image: .*:\\)[^[:space:]]*|\\1${GIT_COMMIT_SHORT}|' docker-compose.yml && \
                             docker-compose up -d"
                         """
             }
