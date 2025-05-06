@@ -42,11 +42,15 @@ pipeline {
 
             steps {
                 script {
-                    sh'whoami'
-                    sh 'groups'
-                    sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-frontend:latest -t ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT} -f frontend/Dockerfile ./frontend'
-                    sh "echo REPOSITORY_URI: ${REPOSITORY_URI}"
-                    sh 'docker build -t ${REPOSITORY_URI}/react-nodejs-backend:latest -t ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT} -f backend/Dockerfile ./backend'
+                    sh """
+                        echo "REACT_APP_HOST_IP=${REACT_APP_HOST_IP}" > frontend/.env
+                        docker build -t ${REPOSITORY_URI}/react-nodejs-frontend:latest \\
+                                     -t ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT} \\
+                                     -f frontend/Dockerfile ./frontend
+                        docker build -t ${REPOSITORY_URI}/react-nodejs-backend:latest \\
+                                     -t ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT} \\
+                                     -f backend/Dockerfile ./backend
+                    """
                 }
             }
         }
@@ -83,24 +87,18 @@ pipeline {
             }
         }
 
-        stage('Clean artifacts') {
-            steps {
-                script {
-                    // clean local images after build
-                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-frontend:latest'
-                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-frontend:${GIT_COMMIT_SHORT}'
-                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-backend:latest'
-                    sh 'docker rmi ${REPOSITORY_URI}/react-nodejs-backend:${GIT_COMMIT_SHORT}'
-                }
-            }
-        }
-
         stage('Deploy to production') {
             steps {
                 script {
                     // Deploy frontend
                     sshagent(credentials: ['prod-server-ssh']) {
-                        sh 'ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "cd /home/huynguyen/reactjs-nodejs-project && docker-compose down --rmi all && docker-compose up -d"'
+                    sh """
+                        ssh -o StrictHostKeyChecking=no huynguyen@prod-sotatek "\
+                            cd /home/huynguyen/reactjs-nodejs-project && \
+                            docker-compose down && \
+                            sed -i '/mysql/!s|\\(image: .*:\\)[^[:space:]]*|\\1${GIT_COMMIT_SHORT}|' docker-compose.yml && \
+                            docker-compose up -d"
+                        """
             }
                 }
             }
