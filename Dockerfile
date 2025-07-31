@@ -5,13 +5,13 @@ FROM node:18-bullseye
 WORKDIR /app
 
 # Copy the dependencies (libs) (cache)
-COPY package*.json ./
+COPY ./backend/package*.json .
 
 # Install the libs (cache)
 RUN npm install
 
 # Copy the rest of application files from localhost into the container
-COPY . .
+COPY ./backend .
 # Expose port
 EXPOSE 3001
 
