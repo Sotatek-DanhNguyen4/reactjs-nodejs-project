@@ -14,7 +14,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "mysql2": "^3.14.0"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",

@@ -1,30 +1,38 @@
 const express = require('express');
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 
-const db = mysql.createConnection({
-    host: process.env.MYSQL_HOST || 'mysql_db',
-    user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_PASSWORD || 'root',
-    database: process.env.MYSQL_DB || 'NodeTest',
-    port: process.env.MYSQL_PORT || 3306
+const pool = new Pool({
+    host: process.env.POSTGRES_HOST || 'uat-nexus-nexus.chrimikajkhn.us-east-1.rds.amazonaws.com',
+    user: process.env.POSTGRES_USER || 'postgresadmin',
+    password: process.env.POSTGRES_PASSWORD || 'MySecurePassword123!',
+    database: process.env.POSTGRES_DB || 'nexus',
+    port: process.env.POSTGRES_PORT || 5432,
+    ssl: {
+        rejectUnauthorized: false
+    },
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000
 });
 
-db.connect(err => {
+pool.connect((err, client, release) => {
     if (err) {
-        console.error('Database connection failed:', err);
+        console.error('Database connection failed:', err.message);
+        console.error('Error code:', err.code);
+        console.error('Error detail:', err.detail);
         return;
     }
-    console.log('Connected to MySQL');
+    console.log('Connected to PostgreSQL RDS');
+    release();
 });
 
 app.get('/countries', (req, res) => {
-    db.query('SELECT * FROM countries', (err, results) => {
+    pool.query('SELECT * FROM countries', (err, results) => {
         if (err) return res.status(500).json({ error: err });
-        res.json(results);
+        res.json(results.rows);
     });
 });
 

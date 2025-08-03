@@ -16,36 +16,15 @@ services:
     ports:
       - "3001:3001"
     environment:
-      MYSQL_HOST: mysql_db
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
-      MYSQL_DB: NodeTest
-    depends_on:
-      mysql:
-       condition: service_healthy
+      POSTGRES_HOST: uat-nexus-nexus.chrimikajkhn.us-east-1.rds.amazonaws.com
+      POSTGRES_USER: postgresadmin
+      POSTGRES_PASSWORD: MySecurePassword123!
+      POSTGRES_DB: nexus
+      POSTGRES_PORT: 5432
     container_name: backend_app
     networks:
       - front-tier
-      - back-tier
-  mysql:
-    image: mysql:8.0
-    ports:
-      - "3307:3306"
-    container_name: mysql_db
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-    networks:
-      - back-tier
-    volumes:
-      - ./initdb:/docker-entrypoint-initdb.d
-      - ./mysql_data:/var/lib/mysql
 
 networks:
  front-tier:
-    driver: bridge
- back-tier:
     driver: bridge
