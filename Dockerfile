@@ -5,7 +5,7 @@ FROM node:18-bullseye
 WORKDIR /app
 
 # Copy the dependencies (libs) (cache)
-COPY ./backend/package*.json .
+COPY ./backend/package*.json ./
 
 # Install the libs (cache)
 RUN npm install
