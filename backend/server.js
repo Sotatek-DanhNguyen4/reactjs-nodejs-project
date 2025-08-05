@@ -5,17 +5,13 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-const pool = new Pool({
-    host: process.env.POSTGRES_HOST || 'uat-nexus-nexus.chrimikajkhn.us-east-1.rds.amazonaws.com',
-    user: process.env.POSTGRES_USER || 'postgresadmin',
-    password: process.env.POSTGRES_PASSWORD || 'MySecurePassword123!',
-    database: process.env.POSTGRES_DB || 'nexus',
-    port: process.env.POSTGRES_PORT || 5432,
-    ssl: {
-        rejectUnauthorized: false
-    },
-    connectionTimeoutMillis: 10000,
-    idleTimeoutMillis: 30000
+const db = mysql.createConnection({
+    host: process.env.mysql-host || 'lab2-mysql-eastus–001',
+    user: process.env.mysql-user|| 'azureuser',
+    password: process.env.mysql-pass || 'Azureuser123@',
+    database: process.env.mysql-db || 'NodeTest',
+    port: process.env.mysql-port || 3306
+
 });
 
 pool.connect((err, client, release) => {
