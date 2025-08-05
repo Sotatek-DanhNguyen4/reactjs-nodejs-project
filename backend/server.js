@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 
 const db = mysql.createConnection({
-    host: process.env.MYSQL_HOST || 'mysql_db',
+    host: process.env.MYSQL_HOST || 'lab2-mysql-eastus–001',
     user: process.env.MYSQL_USER || 'root',
     password: process.env.MYSQL_PASSWORD || 'root',
     database: process.env.MYSQL_DB || 'NodeTest',
