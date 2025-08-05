@@ -21,7 +21,7 @@ pool.connect((err, client, release) => {
         console.error('Error detail:', err.detail);
         return;
     }
-    console.log('Connected to PostgreSQL RDS');
+    console.log('Connected to MySQL Flexible Server');
     release();
 });
 
