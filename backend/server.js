@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 const cors = require('cors');
 
 const app = express();
@@ -11,20 +11,24 @@ const db = mysql.createConnection({
     password: process.env.mysql-pass || 'Azureuser123@',
     database: process.env.mysql-db || 'NodeTest',
     port: process.env.mysql-port || 3306
+
 });
 
-db.connect(err => {
+pool.connect((err, client, release) => {
     if (err) {
-        console.error('Database connection failed:', err);
+        console.error('Database connection failed:', err.message);
+        console.error('Error code:', err.code);
+        console.error('Error detail:', err.detail);
         return;
     }
-    console.log('Connected to MySQL');
+    console.log('Connected to PostgreSQL RDS');
+    release();
 });
 
 app.get('/countries', (req, res) => {
-    db.query('SELECT * FROM countries', (err, results) => {
+    pool.query('SELECT * FROM countries', (err, results) => {
         if (err) return res.status(500).json({ error: err });
-        res.json(results);
+        res.json(results.rows);
     });
 });
 
