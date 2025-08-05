@@ -6,9 +6,9 @@ const app = express();
 app.use(cors());
 
 const db = mysql.createConnection({
-    host: process.env.mysql-host || 'lab2-mysql-eastus–001',
-    user: process.env.mysql-user|| 'azureuser',
-    password: process.env.mysql-pass || 'Azureuser123@',
+    host: process.env.mysql-host || '',
+    user: process.env.mysql-user|| '',
+    password: process.env.mysql-pass || '',
     database: process.env.mysql-db || 'NodeTest',
     port: process.env.mysql-port || 3306
 
