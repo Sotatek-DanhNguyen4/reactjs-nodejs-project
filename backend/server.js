@@ -6,11 +6,11 @@ const app = express();
 app.use(cors());
 
 const db = mysql.createConnection({
-    host: process.env.MYSQL_HOST || 'lab2-mysql-eastus–001',
-    user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_PASSWORD || 'root',
-    database: process.env.MYSQL_DB || 'NodeTest',
-    port: process.env.MYSQL_PORT || 3306
+    host: process.env.mysql-host || 'lab2-mysql-eastus–001',
+    user: process.env.mysql-user|| 'azureuser',
+    password: process.env.mysql-pass || 'Azureuser123@',
+    database: process.env.mysql-db || 'NodeTest',
+    port: process.env.mysql-port || 3306
 });
 
 db.connect(err => {
