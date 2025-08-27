@@ -9,7 +9,7 @@ const pool = new Pool({
     host: process.env.POSTGRES_HOST || 'staging-haystack-haystack.chrimikajkhn.us-east-1.rds.amazonaws.com',
     user: process.env.POSTGRES_USER || 'postgresadmin',
     password: process.env.POSTGRES_PASSWORD || 'MySecurePassword123!',
-    database: process.env.POSTGRES_DB || 'postgres',
+    database: process.env.POSTGRES_DB || 'haystack',
     port: process.env.POSTGRES_PORT || 5432,
     ssl: {
         rejectUnauthorized: false
